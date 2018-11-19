@@ -23,13 +23,13 @@ vk.updates.on(['new_message', 'edit_message'], async (msg) => {
     msg.sendPhoto(buffer);
   } else if (msg.attachments.length) {
     let url = last(msg.attachments).largePhoto;
-    let [{ symbol: [{ data, error }] }] = JSON.parse(await (await fetch(`https://api.qrserver.com/v1/read-qr-code/?fileurl=${url}`)).text());
+    let [{ symbol: [{ data, error }] }] = await (await fetch(`https://api.qrserver.com/v1/read-qr-code/?fileurl=${url}`)).json();
     
     if (error) return msg.send('Мы не смогли найти QR-код! &#128560;');
     msg.send(data);
   } else if (msg.forwards.length) {
     let url = last(last(msg.forwards.flatten).attachments).largePhoto;
-    let [{ symbol: [{ data, error }] }] = JSON.parse(await (await fetch(`https://api.qrserver.com/v1/read-qr-code/?fileurl=${url}`)).text());
+    let [{ symbol: [{ data, error }] }] = await (await fetch(`https://api.qrserver.com/v1/read-qr-code/?fileurl=${url}`)).json();
     
     if (error) return msg.send('Мы не смогли найти QR-код! &#128560;');
     msg.send(data);
